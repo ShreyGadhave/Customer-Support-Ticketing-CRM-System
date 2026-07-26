@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServer } from "@/lib/supabase-server";
 import type { TicketPriority } from "@/lib/types";
 
+// Force dynamic rendering since this route uses cookies for auth
+export const dynamic = 'force-dynamic';
+
 // =============================================================================
 // POST /api/tickets — Create a new ticket + AI triage
 // =============================================================================

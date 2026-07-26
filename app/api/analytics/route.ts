@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { getSupabaseServer } from "@/lib/supabase-server";
 
+// Force dynamic rendering since this route uses cookies for auth
+export const dynamic = 'force-dynamic';
+
 // =============================================================================
 // GET /api/analytics
 // Returns aggregate ticket stats + daily counts for the last 7 days.

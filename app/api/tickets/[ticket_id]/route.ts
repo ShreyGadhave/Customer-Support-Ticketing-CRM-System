@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServer } from "@/lib/supabase";
 
+// Force dynamic rendering since this route uses cookies for auth
+export const dynamic = 'force-dynamic';
+
 // Route params are passed as the second argument to every handler in Next.js 14
 type RouteContext = { params: { ticket_id: string } };
 
