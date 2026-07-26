@@ -26,7 +26,7 @@ export default function SignupPage() {
     setError(null);
 
     const supabase = getSupabaseBrowser();
-    const { error: authError } = await supabase.auth.signUp({
+    const { data, error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -37,7 +37,22 @@ export default function SignupPage() {
     });
 
     if (authError) {
-      setError(authError.message);
+      // Check for specific error messages indicating duplicate email
+      if (authError.message.toLowerCase().includes('already registered') || 
+          authError.message.toLowerCase().includes('already exists') ||
+          authError.message.toLowerCase().includes('duplicate')) {
+        setError("An account with this email already exists. Please sign in instead.");
+      } else {
+        setError(authError.message);
+      }
+      setLoading(false);
+      return;
+    }
+
+    // Check if user already exists (Supabase returns user but with identities empty)
+    // When email already exists, Supabase may still return success but with specific data structure
+    if (data.user && data.user.identities && data.user.identities.length === 0) {
+      setError("An account with this email already exists. Please sign in instead.");
       setLoading(false);
       return;
     }
